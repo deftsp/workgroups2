@@ -4314,10 +4314,11 @@ SESSION nil defaults to the current session."
 (defun wg-set-session-parameter (parameter value &optional session)
   "Set PARAMETER to VALUE in SESSION.
 SESSION nil means use the current session.  Return value."
-  (-when-let (session (or session (wg-current-session t)))
-    (wg-set-parameter (wg-session-parameters session) parameter value)
-    (wg-flag-session-modified session)
-    value))
+  (when session
+    (let* ((s (or session (wg-current-session t))))
+      (wg-set-parameter (wg-session-parameters s) parameter value)
+      (wg-flag-session-modified s)
+      value)))
 
 (defun wg-remove-session-parameter (parameter &optional session)
   "Remove parameter PARAMETER from SESSION's parameters."
